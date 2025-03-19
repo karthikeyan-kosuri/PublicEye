@@ -17,23 +17,23 @@ app.use(cors());
 // Signup route
 app.post('/signup', async (req, res) => {
     const { email, password } = req.body;
-
+  
     try {
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'User already exists!' });
-        }
-
-        // Hash password before saving
-        const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = await User.create({ email, password: hashedPassword });
-
-        res.status(200).json({ message: 'Signup successful!' });
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ message: 'User already exists!' });
+      }
+  
+      const hashedPassword = await bcrypt.hash(password, 10);
+      const newUser = await User.create({ email, password: hashedPassword });
+  
+      res.status(200).json({ message: 'Signup successful!' });
     } catch (error) {
-        res.status(500).json({ message: 'An error occurred during signup.' });
+      console.error('Signup error:', error);  // Log the error for debugging
+      res.status(500).json({ message: 'An error occurred during signup.' });
     }
-});
-
+  });
+  
 // Login route
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
@@ -85,10 +85,10 @@ app.get('/dashboard', authMiddleware, (req, res) => {
 mongoose.connect(constring)
   .then(() => {
     console.log("Connected to database");
-    app.listen(4000, () => {
-      console.log("Server running on port 4000");
+    app.listen(5000, () => {
+      console.log("Server running on port 5000");
     });
   })
-  .catch(() => {
-    console.log("Connection failed");
+  .catch((error) => {
+    console.log("Connection failed:", error);  // Log the error for debugging
   });
