@@ -3,6 +3,8 @@ const mongoose = require('mongoose');
 const User = require('./model/user.js'); 
 const app = express();
 const cors = require('cors');
+require('dotenv').config();
+const constring = process.env.constring;
 
 // Middleware to parse JSON
 app.use(express.json());
@@ -53,7 +55,7 @@ app.post('/login', async (req, res) => {
     }
 });
 
-mongoose.connect("mongodb+srv://nagabhyravakarthik:X5CjvUbDasw3bMPx@civicengage.pkms1.mongodb.net/?retryWrites=true&w=majority&appName=civicengage")
+mongoose.connect('constring')
 .then(() =>{
     console.log("connected to database");
     app.listen(4000, ()=>{
