@@ -1,4 +1,4 @@
-import Landing from "./landing.jsx"
+import Landing from "./landing.jsx";
 function App(){
     return(
         <>
@@ -6,3 +6,4 @@ function App(){
         </>
     );
 }
+export default App;
