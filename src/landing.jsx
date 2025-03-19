@@ -9,7 +9,7 @@ const Landing = () => {
         <img src={headerimg} className="h-200 mx-auto"></img>
         <div className="absolute top-1/3 left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-15">
           <div className="w-155 h-100 flex flex-col justify-center font">
-            <h1 className="text-[70px]/[60px] text-center">
+            <h1 className="text-[70px]/[60px] text-center mt-40">
               For a better <span className="text-[55px]">community</span>
             </h1>
             <h1 className="text-[20px] text-center mt-10">
@@ -18,10 +18,10 @@ const Landing = () => {
             </h1>
           </div>
           <div className="flex flex-row justify-center mt-10 text-[25px] gap-15">
-            <button onClick={()=>navigate("/login")} className="px-10 py-4 rounded-full bg-[#C3DAC977]">
+            <button onClick={()=>navigate("/login")} className="shadow-xl px-10 py-4 rounded-full bg-[#C3DAC977] cursor-pointer">
               Login
             </button>
-            <button onClick={()=>navigate("/signup")} className="px-7 py-4 rounded-full bg-[#C3DAC977]">
+            <button onClick={()=>navigate("/signup")} className="shadow-xl px-7 py-4 rounded-full bg-[#C3DAC977] cursor-pointer">
               Sign Up
             </button>
           </div>

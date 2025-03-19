@@ -2,17 +2,20 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import loginbg from "./assets/login-design.png";
 import logo from "./assets/logo.png";
-const Login = () => {
+
+const Signup = () => {
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleLogin = async () => {
-    setError(""); // Clear previous errors
+  const handleSignup = async () => {
+    setError("");
+    setSuccess("");
 
     try {
-      const response = await fetch("http://localhost:5000/login", {
+      const response = await fetch("http://localhost:5000/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -25,10 +28,10 @@ const Login = () => {
         throw new Error(data.message);
       }
 
-      localStorage.setItem("token", data.token); // Store JWT token
-      navigate("/dashboard"); // Redirect after login
+      setSuccess("Signup successful! Redirecting to login...");
+      setTimeout(() => navigate("/login"), 2000);
     } catch (error) {
-      setError(error.message); // Show error message
+      setError(error.message);
     }
   };
 
@@ -36,12 +39,13 @@ const Login = () => {
     <div className="relative">
       <img src={loginbg} className="object-cover h-screen w-full" />
       <div className="absolute top-7 left-5 w-50">
-        <img src={logo}></img>
+        <img src={logo} alt="Logo" />
       </div>
       <div className="absolute top-20 left-70 mt-15 backdrop-blur-md rounded-4xl shadow-2xl">
         <div className="w-80 h-90 m-10 font-medium">
-          <h1 className="text-[30px] font-bold">Login</h1>
+          <h1 className="text-[30px] font-bold">Sign Up</h1>
           {error && <p className="text-red-500">{error}</p>}
+          {success && <p className="text-green-500">{success}</p>}
           <br />
           <p>Email</p>
           <input
@@ -61,17 +65,17 @@ const Login = () => {
           />
           <button
             className="w-full h-10 text-white my-5 rounded-sm bg-[#386641] cursor-pointer"
-            onClick={handleLogin}
+            onClick={handleSignup}
           >
-            Sign in
+            Sign Up
           </button>
           <p className="font-light">
-            Don’t have an account?{" "}
+            Already have an account? {" "}
             <span
               className="text-[#386641] font-medium cursor-pointer"
-              onClick={() => navigate("/signup")}
+              onClick={() => navigate("/login")}
             >
-              Register for free
+              Log in
             </span>
           </p>
         </div>
@@ -80,4 +84,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signup;
