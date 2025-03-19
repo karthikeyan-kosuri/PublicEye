@@ -27,7 +27,7 @@ const Dashboard = () => {
   return (
     <div className="flex h-screen">
       {/* Sidebar */}
-      <aside className="w-64 p-5 flex flex-col gap-4 bg-[#839281] shadow-lg">
+      <aside className="w-64 p-5 flex flex-col gap-4 bg-[#97AC8F] shadow-lg">
         <h1 className="text-xl font-bold">Dashboard</h1>
         <nav className="flex flex-col gap-2">
           <button
@@ -52,7 +52,7 @@ const Dashboard = () => {
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 p-6 bg-gray-100 relative">
+      <main className="flex-1 p-6 bg-[#D9D9D9] relative">
         {/* Top Bar */}
         <div className="flex justify-end items-center mb-4 space-x-4">
           <button onClick={() => setShowNotifications(!showNotifications)} className="relative p-2 rounded-full bg-white shadow-md">
