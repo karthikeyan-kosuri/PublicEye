@@ -1,5 +1,7 @@
 import headerimg from "./assets/header-img.png";
-function Landing() {
+import { useNavigate } from "react-router-dom";
+const Landing = () => {
+  const navigate = useNavigate();
   return (
     <div className=" font-[Comfortaa] bg-linear-to-b from-[#97AC8F]/80 to-[#3D463A]">
       <div className="relative">
@@ -16,10 +18,10 @@ function Landing() {
             </h1>
           </div>
           <div className="flex flex-row justify-center mt-10 text-[25px] gap-15">
-            <button className="px-10 py-4 rounded-full bg-[#C3DAC977]">
+            <button onClick={()=>navigate("/login")} className="px-10 py-4 rounded-full bg-[#C3DAC977]">
               Login
             </button>
-            <button className="px-7 py-4 rounded-full bg-[#C3DAC977]">
+            <button onClick={()=>navigate("/signup")} className="px-7 py-4 rounded-full bg-[#C3DAC977]">
               Sign Up
             </button>
           </div>
