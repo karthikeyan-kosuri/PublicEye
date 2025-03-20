@@ -2,6 +2,7 @@ import { useState, useRef, useEffect } from "react";
 import { Home, Bell, User, FileText, PlusCircle, ArrowUp, X } from "lucide-react";
 import NewIssue from "./NewIssue";
 import ReportedIssues from "./ReportedIssues";
+import axios from "axios"; // Import axios directly
 
 const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState("issues");
@@ -93,19 +94,33 @@ const Dashboard = () => {
 
 // Issues Component with Improved Upvote System
 const Issues = () => {
-  const [issues, setIssues] = useState([
-    { id: 1, title: "Broken Road, please repair", upvotes: 32, ward: "Ward 5" },
-    { id: 2, title: "Streetlights not working", upvotes: 12, ward: "Ward 8" },
-    { id: 3, title: "Garbage collection delayed", upvotes: 18, ward: "Ward 3" },
-  ]);
+  const [issues, setIssues] = useState([]); // State to hold the issues data from MongoDB
+  const [hasUpvoted, setHasUpvoted] = useState({}); // To track upvoted issues
 
-  const [hasUpvoted, setHasUpvoted] = useState({});
+  useEffect(() => {
+    // Fetch the issues from the backend when the component mounts
+    const fetchIssues = async () => {
+      try {
+        // Make a GET request to your backend API to fetch issues
+        const response = await axios.get("http://localhost:5000/api/issues", {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`, // Add JWT token to headers
+          },
+        });
+        setIssues(response.data); // Set the fetched issues to state
+      } catch (error) {
+        console.error("Error fetching issues:", error);
+      }
+    };
+
+    fetchIssues(); // Call the function to fetch issues
+  }, []); // Empty dependency array ensures it runs only once when the component mounts
 
   const handleUpvote = (id) => {
     if (!hasUpvoted[id]) {
       setIssues((prev) =>
         prev.map((issue) =>
-          issue.id === id ? { ...issue, upvotes: issue.upvotes + 1 } : issue
+          issue._id === id ? { ...issue, upvotes: issue.upvotes + 1 } : issue
         )
       );
       setHasUpvoted((prev) => ({ ...prev, [id]: true }));
@@ -125,20 +140,28 @@ const Issues = () => {
         {issues.map((issue) => {
           const severity = getSeverity(issue.upvotes);
           return (
-            <div key={issue.id} className="bg-white p-4 rounded-lg shadow-md flex items-center gap-4">
-              <img src="https://via.placeholder.com/100" alt="Issue" className="w-24 h-24 rounded-lg" />
+            <div key={issue._id} className="bg-white p-4 rounded-lg shadow-md flex items-center gap-4">
+              <img
+                src="https://via.placeholder.com/100"
+                alt="Issue"
+                className="w-24 h-24 rounded-lg"
+              />
               <div className="flex-1">
                 <h3 className="text-lg font-semibold">{issue.title}</h3>
                 <p className="text-sm text-gray-600">Ward: {issue.ward}</p>
                 <div className="flex items-center gap-2 mt-2">
-                  <span className={`text-white text-xs px-2 py-1 rounded ${severity.color}`}>{severity.level}</span>
+                  <span
+                    className={`text-white text-xs px-2 py-1 rounded ${severity.color}`}
+                  >
+                    {severity.level}
+                  </span>
                 </div>
               </div>
               {/* Upvote Button */}
               <button
-                onClick={() => handleUpvote(issue.id)}
-                disabled={hasUpvoted[issue.id]}
-                className={`px-3 py-1 text-sm rounded flex items-center gap-1 ${hasUpvoted[issue.id] ? "text-gray-400 cursor-not-allowed" : "text-blue-600"}`}
+                onClick={() => handleUpvote(issue._id)}
+                disabled={hasUpvoted[issue._id]}
+                className={`px-3 py-1 text-sm rounded flex items-center gap-1 ${hasUpvoted[issue._id] ? "text-gray-400 cursor-not-allowed" : "text-blue-600"}`}
               >
                 <ArrowUp size={20} />
                 <span className="text-lg font-bold">{issue.upvotes}</span>
